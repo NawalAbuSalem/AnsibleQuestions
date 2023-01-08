@@ -1,0 +1,7 @@
+- name: connect to two machines, print hostname 
+  hosts: all
+  become: true
+  tasks:
+  - name : print host name
+    ansible.builtin.debug:
+      msg: the host name for this machine is {{ansible_hostname}}

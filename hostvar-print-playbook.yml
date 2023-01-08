@@ -1,0 +1,7 @@
+- name: connect to two machines, print hostname 
+  hosts: all
+  become: true
+  tasks:
+  - name : print host name
+    ansible.builtin.debug:
+      msg: the IP address of the {{inventory_hostname}} is {{ hostvars['host1']['ansible_host']}} 

@@ -1,0 +1,23 @@
+---
+# tasks file for welcome
+- name: Create a new file
+  ansible.builtin.file:
+    path: "{{file_path}}"
+    state: touch
+  delegate_to: 127.0.0.1
+
+- name: write to the file
+  ansible.builtin.lineinfile:
+    line: hello {{item}}
+    dest: "{{file_path}}"
+  loop: "{{users_name}}"
+  delegate_to: 127.0.0.1
+
+- name: read the file content
+  ansible.builtin.shell: cat "{{file_path}}"
+  register: file_content
+  delegate_to: 127.0.0.1
+
+- name: print the file content in the console
+  ansible.builtin.debug:
+    msg: "{{file_content.stdout}}"

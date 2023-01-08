@@ -1,0 +1,17 @@
+- name: connect to two machines, get all files under /tmp directory, print all files names starts with "hello" 
+  hosts: all
+  become: true
+  tasks:
+  - name: get file list
+    ansible.builtin.find:
+      paths: /tmp
+      file_type: file
+      use_regex: yes
+      patterns: ['^hello']
+    register: file_list
+
+  - name: print files list
+    ansible.builtin.debug:
+      msg: "{{item.path|basename}}"
+    loop: "{{file_list.files}}"
+    when:  (item.path|basename).startswith('hello')

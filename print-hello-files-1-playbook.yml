@@ -1,0 +1,30 @@
+- name: connect to two machines, get all files under /tmp directory, print all files names starts with "hello" 
+  hosts: all
+  become: true
+  tasks:
+  - name: Create a new directory tmp 
+    ansible.builtin.file:
+      path: /tmp
+      state: directory
+
+  - name: Create a new list of files
+    ansible.builtin.file:
+      path: /tmp/{{item}}
+      state: touch
+    loop: 
+      - hello_world.txt
+      - world.txt
+      - hello users.txt
+      - user.txt
+
+  - name: get file list
+    ansible.builtin.find:
+      paths: /tmp
+      file_type: file
+      use_regex: yes
+      patterns: ['^hello']
+    register: file_list
+
+  - name: print files list
+    ansible.builtin.debug:
+      msg: "{{ file_list.files | map(attribute='path')| map('regex_replace','^/tmp/(.*)$', '\\1') | list }}"

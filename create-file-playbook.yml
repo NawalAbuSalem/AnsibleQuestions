@@ -1,0 +1,26 @@
+- name: connect to two machines, create directory, create file, write hello_world to that file 
+  hosts: all
+  become: true
+  tasks:
+  - name: Create a new directory 
+    ansible.builtin.file:
+      path: /files_directory
+      state: directory
+
+  - name: Create a new file
+    ansible.builtin.file:
+      path: /files_directory/welcome_file.txt
+      state: touch
+
+  -  name: write to the file
+     ansible.builtin.copy:
+      content: hello_world
+      dest: "/files_directory/welcome_file.txt"
+
+  - name: read the file content
+    ansible.builtin.shell: cat /files_directory/welcome_file.txt
+    register: file_content
+
+  - name: print the file content in the console
+    ansible.builtin.debug:
+      msg: "the contect of the welcome file is {{file_content.stdout}}"

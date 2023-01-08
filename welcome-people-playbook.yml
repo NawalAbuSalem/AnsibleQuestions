@@ -1,0 +1,21 @@
+- name: connect to two machines, render a file containing welcoming message to group of users pypassed as variable 
+  hosts: host1
+  become: true
+  tasks:
+  - name : inculde role (1)
+    include_role:
+      name: welcome
+    vars:
+      file_path: "/root/ansible-questions/roles/files/file.txt"
+      users_name:
+        - "person1"
+        - "person2" 
+
+  - name : inculde role (2)
+    include_role:
+      name: welcome
+    vars:
+      file_path: "/root/ansible-questions/roles/files/file.txt"
+      users_name:
+        - "person3"
+        - "person4" 
