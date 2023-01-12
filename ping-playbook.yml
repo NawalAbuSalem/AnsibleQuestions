@@ -5,3 +5,4 @@
   - name: ping host2
     ansible.builtin.shell: ping -w 5 {{ hostvars['host2']['ansible_host']}} 
     register: log_content
+    
